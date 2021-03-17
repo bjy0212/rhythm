@@ -30,8 +30,10 @@ const video = document.querySelector("video"),
         "score": 0,
         "combo": 0,
         "currentTime": 0,
-        "maxCombo": 0
-    };
+        "maxCombo": 0,
+        "hp": 300
+    },
+    hpbar = document.querySelector(".ui-hp-bar");
 
 let loop = null,
     songs = [],
@@ -72,19 +74,6 @@ function Update() {
     });
 }
 
-/**
- * @function Escape to select menu 
- */
-function Escape() {
-    if(document.querySelector(".song-select").style.display === "flex") return;
-    video.pause();
-    if(loop !== null) {
-        clearInterval(loop);
-        loop = null;
-    }
-    document.querySelector(".song-select").style.display = "flex";
-}
-
 function NormalNote(key) {
     //128~132 = fast
     //133~135~137 = perfect
@@ -103,6 +92,8 @@ function NormalNote(key) {
             if(e.y + e.duration <= 141) {
                 document.querySelector(".ui-effect").innerHTML = "perfect";
                 game.score += 20;
+                if(game.hp < 300) game.hp += 50;
+                if(game.hp > 300) game.hp = 300;
                 game.combo++;
                 return;
             }
@@ -125,6 +116,8 @@ function NormalNote(key) {
         if(e.y <= 136) {
             document.querySelector(".ui-effect").innerHTML = "perfect";
             game.score += 20;
+            if(game.hp < 300) game.hp += 50;
+            if(game.hp > 300) game.hp = 300;
             game.combo++;
             game.notes.splice(i, 1);
             return;
@@ -137,6 +130,17 @@ function NormalNote(key) {
             return;
         }
     });
+
+    document.querySelector(".ui-score").innerHTML = `Score: ${game.score}`;
+    document.querySelector(".ui-combo").innerHTML = game.combo;
+    if(game.maxCombo < game.combo) {
+        game.maxCombo = game.combo;
+        document.querySelector(".ui-maxCombo").innerHTML = `Max: ${game.maxCombo}`;
+    }
+    hpbar.style.width = game.hp + "px";
+    if(hpbar > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
+    else if(hpbar > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
+    else hpbar.style.background = "rbga(255, 0, 0, 0.8)";
 }
 
 function GameUpdate() {
@@ -163,12 +167,16 @@ function GameUpdate() {
             if(e.y + e.duration > 150) {
                 document.querySelector(".ui-effect").innerHTML = "loss";
                 game.combo = 0;
+                game.hp -= 30;
+                if(game.hp < 0) GameOver();
                 game.notes.splice(i, 1);
             }
         }
         if(e.y > 145) {
             document.querySelector(".ui-effect").innerHTML = "loss";
             game.combo = 0;
+            game.hp -= 10;
+            if(game.hp < 0) GameOver();
             game.notes.splice(i, 1);
         }
         else e.draw();
@@ -180,6 +188,10 @@ function GameUpdate() {
         game.maxCombo = game.combo;
         document.querySelector(".ui-maxCombo").innerHTML = `Max: ${game.maxCombo}`;
     }
+    hpbar.style.width = game.hp + "px";
+    if(hpbar > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
+    else if(hpbar > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
+    else hpbar.style.background = "rbga(255, 0, 0, 0.8)";
 }
 
 /**
@@ -229,6 +241,8 @@ LongNote.prototype.drop = function(dy) {
         } else if(this.y + this.duration <= 141) {
             document.querySelector(".ui-effect").innerHTML = "perfect";
             game.score += 20;
+            if(game.hp < 300) game.hp += 50;
+            if(game.hp > 300) game.hp = 300;
             game.combo++;
         } else if(this.y + this.duration <= 147) {
             document.querySelector(".ui-effect").innerHTML = "late";
@@ -242,6 +256,10 @@ LongNote.prototype.drop = function(dy) {
             game.maxCombo = game.combo;
             document.querySelector(".ui-maxCombo").innerHTML = `Max: ${game.maxCombo}`;
         }
+        hpbar.style.width = game.hp + "px";
+        if(hpbar > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
+        else if(hpbar > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
+        else hpbar.style.background = "rbga(255, 0, 0, 0.8)";
     }
 }
 
@@ -260,6 +278,8 @@ function Init() {
     game.score = 0;
     game.combo = 0;
     game.currentTime = 0;
+    hpbar.style.width = "300px";
+    game.hp = 300;
 
     document.querySelector(".ui-score").innerHTML = `Score: 0`;
     document.querySelector(".ui-combo").innerHTML = 0;
@@ -286,6 +306,27 @@ function Start(song) {
     video.src = "../songs/" + song + ".mp4";
     notes = JSON.parse(fs.readFileSync(path.join(__dirname, `../songs/${song}.json`)));
     document.querySelector(".song-select").style.display = "none";
+}
+
+/**
+ * @function GameOver
+ */
+ function GameOver() {
+
+}
+
+/**
+ * @function Escape to select menu 
+ */
+function Escape() {
+    if(document.querySelector(".song-select").style.display === "flex") return;
+    video.pause();
+    if(loop !== null) {
+        clearInterval(loop);
+        loop = null;
+    }
+    hpbar.style.width = "0px";
+    document.querySelector(".song-select").style.display = "flex";
 }
 
 (function AppStart() {
