@@ -46,6 +46,8 @@ document.addEventListener("keydown", function(event) {
 
     if(["enter", " ", "tab"].includes(event.key.toLowerCase())) event.preventDefault();
 
+    if(keydown[event.key]) return;
+
     keydown[event.key] = true;
     Update();
     NormalNote(event.key.toLowerCase());
@@ -91,20 +93,20 @@ function NormalNote(key) {
     game.notes.forEach((e, i) => {
         if(e.key !== key) return;
         if(e.type === "long") {
-            if(e.y + e.duration < 137 || e.y + e.duration > 145) return;
-            if(e.y + e.duration <= 135) {
+            if(e.y + e.duration < 134 || e.y + e.duration > 147) return;
+            if(e.y + e.duration <= 138) {
                 document.querySelector(".ui-effect").innerHTML = "fast";
                 game.score += 10;
                 game.combo++;
                 return;
             }
-            if(e.y + e.duration <= 140) {
+            if(e.y + e.duration <= 141) {
                 document.querySelector(".ui-effect").innerHTML = "perfect";
                 game.score += 20;
                 game.combo++;
                 return;
             }
-            if(e.y + e.duration <= 145) {
+            if(e.y + e.duration <= 147) {
                 document.querySelector(".ui-effect").innerHTML = "late";
                 game.score += 5;
                 game.combo++;
@@ -112,22 +114,22 @@ function NormalNote(key) {
             }
             return;
         }
-        if(e.y < 127 || e.y > 145) return;
-        if(e.y <= 132) {
+        if(e.y < 130 || e.y > 141) return;
+        if(e.y <= 133) {
             document.querySelector(".ui-effect").innerHTML = "fast";
             game.score += 10;
             game.combo++;
             game.notes.splice(i, 1);
             return;
         }
-        if(e.y <= 139) {
+        if(e.y <= 136) {
             document.querySelector(".ui-effect").innerHTML = "perfect";
             game.score += 20;
             game.combo++;
             game.notes.splice(i, 1);
             return;
         }
-        if(e.y <= 145) {
+        if(e.y <= 141) {
             document.querySelector(".ui-effect").innerHTML = "late";
             game.score += 5;
             game.combo++;
@@ -195,7 +197,6 @@ function Note(key, type) {
 
 Note.prototype.drop = function(dy) {
     this.y += dy;
-    console.log(this.y);
 };
 
 Note.prototype.draw = function() {
@@ -218,11 +219,28 @@ function LongNote(key, type, duration) {
 
 LongNote.prototype.drop = function(dy) {
     this.y += dy;
-    if(this.y < 140 && this.y + this.duration >= 127) {    
-        if(keydown[this.key]) {
+    if(keydown[this.key]) {
+        if(this.y + this.duration < 134 || this.y + this.duration > 147) {
+            return
+        } else if(this.y + this.duration <= 138) {
+            document.querySelector(".ui-effect").innerHTML = "fast";
+            game.score += 10;
+            game.combo++;
+        } else if(this.y + this.duration <= 141) {
             document.querySelector(".ui-effect").innerHTML = "perfect";
             game.score += 20;
-            this.duration = 140 - this.y;
+            game.combo++;
+        } else if(this.y + this.duration <= 147) {
+            document.querySelector(".ui-effect").innerHTML = "late";
+            game.score += 5;
+            game.combo++;
+        }
+
+        this.duration -= 1;
+
+        if(game.maxCombo < game.combo) {
+            game.maxCombo = game.combo;
+            document.querySelector(".ui-maxCombo").innerHTML = `Max: ${game.maxCombo}`;
         }
     }
 }
