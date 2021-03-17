@@ -90,3 +90,6 @@ out/
 
 #src/songs
 src/songs/
+
+#package-lock
+package-lock.json
