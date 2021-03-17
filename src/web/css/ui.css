@@ -59,7 +59,7 @@
     font-size: 32px;
     line-height: 36px;
     color: white;
-    width: 300px;
+    width: 310px;
     background: rgba(0, 0, 0, 0.8);
     text-align: right;
 }
@@ -74,7 +74,7 @@
     font-size: 32px;
     line-height: 36px;
     color: white;
-    width: 300px;
+    width: 310px;
     background: rgba(0, 0, 0, 0.8);
     text-align: right;
 }
@@ -91,4 +91,34 @@
     font-weight: bold;
     line-height: 32px;
     color: white;
+}
+
+.ui-hp {
+    z-index: 2;
+    position: absolute;
+    top: 28px;
+    left: 0px;
+    padding: 10px;
+    font-weight: bold;
+    width: 300px;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.ui-hp-bar {
+    transition: all 500ms linear;
+    z-index: 3;
+    width: 0px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.ui-menu {
+    display: none;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 5;
 }
