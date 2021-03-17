@@ -2,7 +2,7 @@
     "name": "rhythm",
     "productName": "rhythm",
     "version": "1.0.0",
-    "description": "My Electron application description",
+    "description": "rhythm game made with electron",
     "main": "src/index.js",
     "scripts": {
         "start": "electron-forge start",
