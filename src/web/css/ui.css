@@ -2,8 +2,8 @@
     width: 368px;
     height: 640px;
     position: absolute;
-    top: 64px;
-    left: 455px;
+    top: calc((100% - 28px) / 2 - 294px);
+    left: calc(50% - 185px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-top: 2px solid rgba(255, 255, 255, 0.1);
     border-bottom: 2px solid rgba(255, 255, 255, 0.1);
@@ -82,8 +82,8 @@
 .ui-effect-container {
     z-index: 6;
     position: absolute;
-    top: 346px;
-    left: 455px;
+    top: calc((100% - 28px) / 2 - 14px);
+    left: calc(50% - 185px);
     width: 368px;
     height: 64px;
     text-align: center;
@@ -110,6 +110,8 @@
     width: 0px;
     height: 28px;
     background: rgba(255, 255, 255, 0.8);
+    line-height: 28px;
+    font-size: 20px;
 }
 
 .ui-menu {

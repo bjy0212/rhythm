@@ -39,7 +39,7 @@ let loop = null,
     songs = [],
     notes = [];
 
-document.addEventListener("keydown", function(event) {
+window.addEventListener("keydown", function(event) {
     if(event.key.toLowerCase() === "escape") {
         event.preventDefault();
         Escape();
@@ -55,7 +55,7 @@ document.addEventListener("keydown", function(event) {
     NormalNote(event.key.toLowerCase());
 });
 
-document.addEventListener("keyup", function(event) {
+window.addEventListener("keyup", function(event) {
     delete keydown[event.key];
     Update();
 });
@@ -75,59 +75,59 @@ function Update() {
 }
 
 function NormalNote(key) {
-    //128~132 = fast
-    //133~135~137 = perfect
-    //138~142 = late
-
     game.notes.forEach((e, i) => {
         if(e.key !== key) return;
         if(e.type === "long") {
-            if(e.y + e.duration < 134 || e.y + e.duration > 147) return;
+            if(e.y + e.duration < 131 || e.y + e.duration > 150) return;
             if(e.y + e.duration <= 138) {
                 document.querySelector(".ui-effect").innerHTML = "fast";
                 game.score += 10;
                 game.combo++;
                 return;
-            }
-            if(e.y + e.duration <= 141) {
+            } else if(e.y + e.duration <= 141) {
                 document.querySelector(".ui-effect").innerHTML = "perfect";
                 game.score += 20;
                 if(game.hp < 300) game.hp += 50;
                 if(game.hp > 300) game.hp = 300;
                 game.combo++;
                 return;
-            }
-            if(e.y + e.duration <= 147) {
+            } else if(e.y + e.duration <= 150) {
                 document.querySelector(".ui-effect").innerHTML = "late";
                 game.score += 5;
                 game.combo++;
-                return;
             }
+            
+            document.querySelector(".ui-score").innerHTML = `Score: ${game.score}`;
+            document.querySelector(".ui-combo").innerHTML = game.combo;
+            if(game.maxCombo < game.combo) {
+                game.maxCombo = game.combo;
+                document.querySelector(".ui-maxCombo").innerHTML = `Max: ${game.maxCombo}`;
+            }
+            hpbar.style.width = game.hp + "px";
+            if(game.hp > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
+            else if(game.hp > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
+            else hpbar.style.background = "rgba(255, 0, 0, 0.8)";
+            hpbar.innerHTML = game.hp;
             return;
         }
-        if(e.y < 130 || e.y > 141) return;
-        if(e.y <= 133) {
+        if(e.y < 129 || e.y > 146) return;
+        if(e.y <= 135) {
             document.querySelector(".ui-effect").innerHTML = "fast";
             game.score += 10;
             game.combo++;
             game.notes.splice(i, 1);
-            return;
-        }
-        if(e.y <= 136) {
+        } else if(e.y <= 139) {
             document.querySelector(".ui-effect").innerHTML = "perfect";
             game.score += 20;
             if(game.hp < 300) game.hp += 50;
             if(game.hp > 300) game.hp = 300;
             game.combo++;
             game.notes.splice(i, 1);
-            return;
-        }
-        if(e.y <= 141) {
+        } else if(e.y <= 146) {
             document.querySelector(".ui-effect").innerHTML = "late";
             game.score += 5;
             game.combo++;
             game.notes.splice(i, 1);
-            return;
         }
     });
 
@@ -138,9 +138,10 @@ function NormalNote(key) {
         document.querySelector(".ui-maxCombo").innerHTML = `Max: ${game.maxCombo}`;
     }
     hpbar.style.width = game.hp + "px";
-    if(hpbar > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
-    else if(hpbar > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
-    else hpbar.style.background = "rbga(255, 0, 0, 0.8)";
+    if(game.hp > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
+    else if(game.hp > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
+    else hpbar.style.background = "rgba(255, 0, 0, 0.8)";
+    hpbar.innerHTML = game.hp;
 }
 
 function GameUpdate() {
@@ -189,9 +190,10 @@ function GameUpdate() {
         document.querySelector(".ui-maxCombo").innerHTML = `Max: ${game.maxCombo}`;
     }
     hpbar.style.width = game.hp + "px";
-    if(hpbar > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
-    else if(hpbar > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
-    else hpbar.style.background = "rbga(255, 0, 0, 0.8)";
+    if(game.hp > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
+    else if(game.hp > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
+    else hpbar.style.background = "rgba(255, 0, 0, 0.8)";
+    hpbar.innerHTML = game.hp;
 }
 
 /**
@@ -232,7 +234,7 @@ function LongNote(key, type, duration) {
 LongNote.prototype.drop = function(dy) {
     this.y += dy;
     if(keydown[this.key]) {
-        if(this.y + this.duration < 134 || this.y + this.duration > 147) {
+        if(this.y + this.duration < 131 || this.y + this.duration > 150) {
             return
         } else if(this.y + this.duration <= 138) {
             document.querySelector(".ui-effect").innerHTML = "fast";
@@ -244,7 +246,8 @@ LongNote.prototype.drop = function(dy) {
             if(game.hp < 300) game.hp += 50;
             if(game.hp > 300) game.hp = 300;
             game.combo++;
-        } else if(this.y + this.duration <= 147) {
+        } else if(this.y + this.duration <= 150) {
+            if (this.y >= 140) this.duration = 0;
             document.querySelector(".ui-effect").innerHTML = "late";
             game.score += 5;
             game.combo++;
@@ -257,14 +260,15 @@ LongNote.prototype.drop = function(dy) {
             document.querySelector(".ui-maxCombo").innerHTML = `Max: ${game.maxCombo}`;
         }
         hpbar.style.width = game.hp + "px";
-        if(hpbar > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
-        else if(hpbar > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
-        else hpbar.style.background = "rbga(255, 0, 0, 0.8)";
+        if(game.hp > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
+        else if(game.hp > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
+        else hpbar.style.background = "rgba(255, 0, 0, 0.8)";
+        hpbar.innerHTML = game.hp;
     }
 }
 
 LongNote.prototype.draw = function() {
-    ctx.fillStyle = "blueviolet";
+    ctx.fillStyle = "gold";
     ctx.fillRect(this.x, this.y, 75, this.duration);
     ctx.fillStyle = "white";
 }
@@ -333,6 +337,9 @@ function Escape() {
     video.volume = 0.5;
     let versionData = JSON.parse(fs.readFileSync(path.join(__dirname, "version.json")));
     songs = Object.keys(versionData.songs);
+
+    canvas.width = 300;
+    canvas.height = 150;
 
     ctx.fillStyle = "white";
     ctx.globalAlpha = 0.6;
