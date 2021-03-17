@@ -1,0 +1,120 @@
+* {
+    -webkit-user-drag: none;
+    /*-moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;*/
+    user-select: none;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+*:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+html, body {
+    width: 1280px;
+    height: 748px;
+    margin: 0;
+    padding: 0;
+}
+
+/*---헤더---*/
+header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    -webkit-app-region: drag;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    justify-content: space-between;
+    color: white;
+    text-align: center;
+    line-height: 28px;
+    z-index: 20;
+}
+
+header > * {
+    -webkit-app-region: no-drag;
+}
+
+/*---상단 탭---*/
+.header-tabs {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.header-title {
+    height: 100%;
+    padding-left: 10px;
+    padding-right: 5px;
+    -webkit-app-region: drag;
+}
+
+/*---상단 버튼---*/
+.header-button-container {
+    display: flex;
+    align-items: center !important;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.header-button-container > a {
+    width: 36px;
+    height: 100%;
+}
+
+.header-button-container > a > div {
+    width: 36px;
+    height: 100%;
+    color: white;
+    text-align: center;
+}
+
+.header-button-container > a > div:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.x-button:hover {
+    background: rgba(220, 20, 60, 0.8) !important;
+}
+
+.play {
+    padding-top: 28px;
+    width: 100%;
+    height: 720px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #121212;
+}
+
+canvas {
+    background: rgba(10, 10, 10, 0.5);
+    width: 370px;
+    height: 640px;
+    z-index: 1;
+}
+
+video {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    width: 1280px;
+    height: 720px;
+    z-index: 0;
+}

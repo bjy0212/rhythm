@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Rhythm Game</title>
+        <link href="./css/index.css" rel="stylesheet" type="text/css"/>
+        <link href="./css/ui.css" rel="stylesheet" type="text/css"/>
+        <link href="./css/songlist.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <header>
+            <div class="header-tabs">
+                <div class="header-title">Rhythm Game</div>
+            </div>
+            <div class="header-button-container">
+                <a href="javascript:window.close()">
+                    <div class="x-button">Ⅹ</div>
+                </a>
+            </div>
+        </header>
+        <div class="play">
+            <div class="song-select">
+                <div class="songs-list">
+                </div>
+            </div>
+            <div class="ui-score">Score: 0</div>
+            <div class="ui-maxCombo">Max: 0</div>
+            <div class="ui-effect-container">
+                <div class="ui-combo">0</div>
+                <div class="ui-effect"></div>
+            </div>
+            <div class="ui">
+                <div class="bars">
+                    <div class="bar" id="bar-d"></div>
+                    <div class="bar" id="bar-f"></div>
+                    <div class="bar" id="bar-j"></div>
+                    <div class="bar" id="bar-k"></div>
+                </div>
+                <div class="footer">
+                    <div class="key" id="key-d">
+                        <div class="key-bar" id="key-bar-d"></div>
+                        <div class="key-code">d</div>
+                    </div>
+                    <div class="key" id="key-f">
+                        <div class="key-bar" id="key-bar-f"></div>
+                        <div class="key-code">f</div>
+                    </div>
+                    <div class="key" id="key-j">
+                        <div class="key-bar" id="key-bar-j"></div>
+                        <div class="key-code">j</div>
+                    </div>
+                    <div class="key" id="key-k">
+                        <div class="key-bar" id="key-bar-k"></div>
+                        <div class="key-code">k</div>
+                    </div>
+                </div>
+            </div>
+            <canvas></canvas>
+            <video width="1280"></video>
+        </div>
+        <script src="./js/index.js">
+        </script>
+    </body>
+</html>

@@ -1,0 +1,94 @@
+.ui {
+    width: 368px;
+    height: 640px;
+    position: absolute;
+    top: 64px;
+    left: 455px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    z-index: 2;
+}
+
+.ui > .bars {
+    width: 368px;
+    height: 596px;
+    display: flex;
+}
+
+.ui > .bars > .bar {
+    width: 90px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+} 
+
+.ui > .footer {
+    width: 368px;
+    height: 40px;
+    display: flex;
+}
+
+.ui > .footer > .key {
+    height: 40px;
+    width: 90px;
+    border-top: 4px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-size: 20px;
+    color: white;
+}
+
+.ui > .footer > .key > .key-bar {
+    margin-top: -10px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0);
+}
+
+.key-bar > .key-code {
+    margin-top: -10px;
+}
+
+.ui-score {
+    z-index: 2;
+    position: absolute;
+    top: 28px;
+    right: 0px;
+    padding-right: 10px;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 36px;
+    color: white;
+    width: 300px;
+    background: rgba(0, 0, 0, 0.8);
+    text-align: right;
+}
+
+.ui-maxCombo {
+    z-index: 2;
+    position: absolute;
+    top: 64px;
+    right: 0px;
+    padding-right: 10px;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 36px;
+    color: white;
+    width: 300px;
+    background: rgba(0, 0, 0, 0.8);
+    text-align: right;
+}
+
+.ui-effect-container {
+    z-index: 6;
+    position: absolute;
+    top: 346px;
+    left: 455px;
+    width: 368px;
+    height: 64px;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 32px;
+    color: white;
+}
