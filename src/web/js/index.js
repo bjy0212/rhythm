@@ -277,7 +277,7 @@ LongNote.prototype.draw = function() {
  * @function Initializing before the game starts
  */
 function Init() {
-    console.log("init");
+    video.play();
     game.notes = [];
     game.score = 0;
     game.combo = 0;
@@ -298,7 +298,6 @@ function Init() {
     loop = setInterval(function() {
         GameUpdate();
     }, game.tick);
-    video.play();
     game.currentTime = (video.currentTime * 100) | 0;
 }
 

@@ -15,9 +15,10 @@ const createWindow = () => {
         },
         width: 1280,
         height: 748,
+        minWidth: 1280,
+        minHeight: 720,
         backgroundColor: '#121212',
         frame: false,
-        resizable: false,
     });
 
     // and load the index.html of the app.
