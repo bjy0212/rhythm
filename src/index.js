@@ -15,16 +15,17 @@ const createWindow = () => {
         },
         width: 1280,
         height: 748,
+        minWidth: 1280,
+        minHeight: 720,
         backgroundColor: '#121212',
         frame: false,
-        resizable: false,
     });
 
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, './web/index.html'));
 
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools();
+     mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
