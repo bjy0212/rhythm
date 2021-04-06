@@ -75,22 +75,23 @@ function Update() {
 }
 
 function NormalNote(key) {
-    game.notes.forEach((e, i) => {
-        if(e.key !== key) return;
+    for(i in game.notes) {
+        let e = game.notes[i];
+        if(e.key !== key) continue;
         if(e.type === "long") {
-            if(e.y + e.duration < 131 || e.y + e.duration > 150) return;
+            if(e.y + e.duration < 131 || e.y + e.duration > 150) break;
             if(e.y + e.duration <= 138) {
                 document.querySelector(".ui-effect").innerHTML = "fast";
                 game.score += 10;
                 game.combo++;
-                return;
+                break;
             } else if(e.y + e.duration <= 141) {
                 document.querySelector(".ui-effect").innerHTML = "perfect";
                 game.score += 20;
                 if(game.hp < 300) game.hp += 50;
                 if(game.hp > 300) game.hp = 300;
                 game.combo++;
-                return;
+                break;
             } else if(e.y + e.duration <= 150) {
                 document.querySelector(".ui-effect").innerHTML = "late";
                 game.score += 5;
@@ -108,9 +109,9 @@ function NormalNote(key) {
             else if(game.hp > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
             else hpbar.style.background = "rgba(255, 0, 0, 0.8)";
             hpbar.innerHTML = game.hp;
-            return;
+            break;
         }
-        if(e.y < 129 || e.y > 146) return;
+        if(e.y < 129 || e.y > 146) break;
         if(e.y <= 135) {
             document.querySelector(".ui-effect").innerHTML = "fast";
             game.score += 10;
@@ -129,7 +130,7 @@ function NormalNote(key) {
             game.combo++;
             game.notes.splice(i, 1);
         }
-    });
+    }
 
     document.querySelector(".ui-score").innerHTML = `Score: ${game.score}`;
     document.querySelector(".ui-combo").innerHTML = game.combo;
@@ -197,83 +198,6 @@ function GameUpdate() {
 }
 
 /**
- * @constructor Note
- * 
- * @param {string} key 
- * @param {string} type 
- */
-function Note(key, type) {
-    this.key = key;
-    this.x = ["d", "f", "j", "k"].indexOf(key) * 75;
-    this.y = 0;
-    this.type = type;
-}
-
-Note.prototype.drop = function(dy) {
-    this.y += dy;
-};
-
-Note.prototype.draw = function() {
-    ctx.fillRect(this.x, this.y, 75, 4);
-};
-
-/**
- * @constructor long note
- * @param {string} key
- * @param {string} type
- * @param {string} duration
- */
-function LongNote(key, type, duration) {
-    this.key = key;
-    this.x = ["d", "f", "j", "k"].indexOf(key) * 75;
-    this.y = -duration;
-    this.type = type;
-    this.duration = duration;
-}
-
-LongNote.prototype.drop = function(dy) {
-    this.y += dy;
-    if(keydown[this.key]) {
-        if(this.y + this.duration < 131 || this.y + this.duration > 150) {
-            return
-        } else if(this.y + this.duration <= 138) {
-            document.querySelector(".ui-effect").innerHTML = "fast";
-            game.score += 10;
-            game.combo++;
-        } else if(this.y + this.duration <= 141) {
-            document.querySelector(".ui-effect").innerHTML = "perfect";
-            game.score += 20;
-            if(game.hp < 300) game.hp += 50;
-            if(game.hp > 300) game.hp = 300;
-            game.combo++;
-        } else if(this.y + this.duration <= 150) {
-            if (this.y >= 140) this.duration = 0;
-            document.querySelector(".ui-effect").innerHTML = "late";
-            game.score += 5;
-            game.combo++;
-        }
-
-        this.duration -= 1;
-
-        if(game.maxCombo < game.combo) {
-            game.maxCombo = game.combo;
-            document.querySelector(".ui-maxCombo").innerHTML = `Max: ${game.maxCombo}`;
-        }
-        hpbar.style.width = game.hp + "px";
-        if(game.hp > 150) hpbar.style.background = "rgba(255, 255, 255, 0.8)";
-        else if(game.hp > 75) hpbar.style.background = "rgba(255, 166, 0, 0.8)";
-        else hpbar.style.background = "rgba(255, 0, 0, 0.8)";
-        hpbar.innerHTML = game.hp;
-    }
-}
-
-LongNote.prototype.draw = function() {
-    ctx.fillStyle = "gold";
-    ctx.fillRect(this.x, this.y, 75, this.duration);
-    ctx.fillStyle = "white";
-}
-
-/**
  * @function Initializing before the game starts
  */
 function Init() {
@@ -303,39 +227,22 @@ function Init() {
 
 /**
  * @function listener for music selection
- * @param {string} song 
+ * @param {string} song
+ * @returns void
  */
 function Start(song) {
-    video.src = "../songs/" + song + ".mp4";
-    notes = JSON.parse(fs.readFileSync(path.join(__dirname, `../songs/${song}.json`)));
+    notes = JSON.parse(fs.readFileSync(path.join(__dirname, `../songs/${song}/notes.json`)));
+    if(fs.existsSync(path.join(__dirname, "../songs/", song, "/video.mp4"))) video.src = "../songs/" + song + "/video.mp4";
     document.querySelector(".song-select").style.display = "none";
-}
-
-/**
- * @function GameOver
- */
- function GameOver() {
-
-}
-
-/**
- * @function Escape to select menu 
- */
-function Escape() {
-    if(document.querySelector(".song-select").style.display === "flex") return;
-    video.pause();
-    if(loop !== null) {
-        clearInterval(loop);
-        loop = null;
-    }
-    hpbar.style.width = "0px";
-    document.querySelector(".song-select").style.display = "flex";
 }
 
 (function AppStart() {
     video.volume = 0.5;
-    let versionData = JSON.parse(fs.readFileSync(path.join(__dirname, "version.json")));
-    songs = Object.keys(versionData.songs);
+    let files = fs.readdirSync(path.join(__dirname, "../songs/"));
+    files.forEach(e => {
+        if(fs.existsSync(path.join(__dirname, "../songs/", e, "notes.json")) &&
+            fs.existsSync(path.join(__dirname, "../songs/", e, "video.mp4"))) songs.push(e);
+    });
 
     canvas.width = 300;
     canvas.height = 150;
@@ -343,9 +250,9 @@ function Escape() {
     ctx.fillStyle = "white";
     ctx.globalAlpha = 0.6;
 
-    video.addEventListener("canplay", function(event) {
+    video.oncanplay = function(event) {
         Init();
-    });
+    };
 
-    songs.forEach(e => document.querySelector(".songs-list").innerHTML += `<div class="song" onclick="Start('${e}')">${versionData.songs[e]}</div>`);
+    songs.forEach(e => document.querySelector(".songs-list").innerHTML += `<div class="song" onclick="Start('${e}')">${e}</div>`);
 })();
